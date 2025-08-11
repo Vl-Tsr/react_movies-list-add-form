@@ -10,17 +10,17 @@ const initialState: Movie[] = moviesFromServer.map(el => el);
 export const App = () => {
   const [movies, setMovies] = useState(initialState);
 
-  const onAdd = (newMovie: Movie): void => {
-    setMovies(prev => [...prev, newMovie]);
-  };
-
   return (
     <div className="page">
       <div className="page-content">
         <MoviesList movies={movies} />
       </div>
       <div className="sidebar">
-        <NewMovie onAdd={onAdd} />
+        <NewMovie
+          onAdd={(newMovie: Movie): void => {
+            setMovies(prev => [...prev, newMovie]);
+          }}
+        />
       </div>
     </div>
   );

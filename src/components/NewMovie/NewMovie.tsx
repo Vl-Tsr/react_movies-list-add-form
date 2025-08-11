@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { TextField } from '../TextField';
 import { Movie } from '../../types/Movie';
 
-type NewMovieProps = {
+type Props = {
   onAdd: (movie: Movie) => void;
 };
 
-export const NewMovie: React.FC<NewMovieProps> = ({ onAdd }) => {
+export const NewMovie: React.FC<Props> = ({ onAdd }) => {
   const [count, setCount] = useState(0);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -14,12 +14,8 @@ export const NewMovie: React.FC<NewMovieProps> = ({ onAdd }) => {
   const [imdbUrl, setImdbUrl] = useState('');
   const [imdbId, setImdbId] = useState('');
 
-  const canSubmit = !(
-    title.trim() &&
-    imgUrl.trim() &&
-    imdbUrl.trim() &&
-    imdbId.trim()
-  );
+  const canSubmit =
+    title.trim() && imgUrl.trim() && imdbUrl.trim() && imdbId.trim();
 
   const reset = () => {
     setTitle('');
@@ -32,17 +28,11 @@ export const NewMovie: React.FC<NewMovieProps> = ({ onAdd }) => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (!title.trim() || !imgUrl.trim() || !imdbUrl.trim() || !imdbId.trim()) {
+    if (!canSubmit) {
       return;
     }
 
-    onAdd({
-      title: title.trim(),
-      description: description.trim(),
-      imgUrl: imgUrl.trim(),
-      imdbUrl: imdbUrl.trim(),
-      imdbId: imdbId.trim(),
-    });
+    onAdd({ title, description, imgUrl, imdbUrl, imdbId });
 
     reset();
     setCount(count + 1);
@@ -97,7 +87,7 @@ export const NewMovie: React.FC<NewMovieProps> = ({ onAdd }) => {
             type="submit"
             data-cy="submit-button"
             className="button is-link"
-            disabled={canSubmit}
+            disabled={!canSubmit}
           >
             Add
           </button>
